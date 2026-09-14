@@ -6,11 +6,13 @@ menu_exec = ['rofi', '-dmenu']  # dmenu compatible menu with prompt (-p) option
 trig_exec_entry = bytes('\tRun scrot\n'.encode()) # String that executes scrot when selected with menu
 trig_exit_entry = bytes('\tQuit scrot menu\n'.encode())
 
-scrot_opts_proc = Popen(['scrot', '--list-options=tsv'], stdout=PIPE)
+scrot_opts_barr = Popen(['scrot', '--list-options=tsv'],
+                        stdout=PIPE).stdout.read()
+
 menu_input_barr = bytearray()
 menu_input_barr.extend(trig_exec_entry)
 menu_input_barr.extend(trig_exit_entry)
-menu_input_barr.extend(scrot_opts_proc.stdout.read())
+menu_input_barr.extend(scrot_opts_barr)
 
 scrot_opts = []
 
