@@ -2,13 +2,15 @@
 
 from subprocess import run,Popen,PIPE
 
-menu_exec = ['rofi', '-dmenu']  # dmenu compatible menu with prompt
-trig_exec_bytes = bytes('\tRun scrot\n'.encode()) # String that executes scrot when selected with menu
+menu_exec = ['rofi', '-dmenu']  # dmenu compatible menu with prompt (-p) option
+trig_exec_entry = bytes('\tRun scrot\n'.encode()) # String that executes scrot when selected with menu
+trig_exit_entry = bytes('\tQuit scrot menu\n'.encode())
 
 scrot_opts_proc = Popen(['scrot', '--list-options=tsv'], stdout=PIPE)
-rofi_input_barr = bytearray()
-rofi_input_barr.extend(trig_exec_bytes)
-rofi_input_barr.extend(scrot_opts_proc.stdout.read())
+menu_input_barr = bytearray()
+menu_input_barr.extend(trig_exec_entry)
+menu_input_barr.extend(trig_exit_entry)
+menu_input_barr.extend(scrot_opts_proc.stdout.read())
 
 scrot_opts = []
 
@@ -20,13 +22,15 @@ def tsv_row_first_cell(tsv_row: bytes) -> str:
 
 while True:
     prompt_string = 'scrot ' + ' '.join(str(s) for s in scrot_opts)
-    rofi_comp_proc = run([ *menu_exec, '-p', prompt_string],
-                         input=rofi_input_barr, capture_output=True)
-    if rofi_comp_proc.stdout == trig_exec_bytes:
+    menu_comp_proc = run([ *menu_exec, '-p', prompt_string],
+                         input=menu_input_barr, capture_output=True)
+    if menu_comp_proc.stdout == trig_exec_entry:
         exec_scrot()
         break
+    elif menu_comp_proc.stdout == trig_exit_entry:
+        exit()
     else:
-        option_letter = tsv_row_first_cell(rofi_comp_proc.stdout)
+        option_letter = tsv_row_first_cell(menu_comp_proc.stdout)
         option = '-' + option_letter
         if option in scrot_opts:
             pass
