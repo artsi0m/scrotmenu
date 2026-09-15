@@ -3,8 +3,8 @@
 from subprocess import run,Popen,PIPE
 
 menu_exec = ['rofi', '-dmenu']  # dmenu compatible menu with prompt (-p) option
-trig_exec_entry = bytes('\tRun scrot\n'.encode()) # String that executes scrot when selected with menu
-trig_exit_entry = bytes('\tQuit scrot menu\n'.encode())
+trig_exec_entry = b'\tRun scrot\n' # String that executes scrot when selected with menu
+trig_exit_entry = b'\tQuit scrot menu\n'
 
 scrot_opts_barr = Popen(['scrot', '--list-options=tsv'],
                         stdout=PIPE).stdout.read()
