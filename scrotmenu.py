@@ -14,10 +14,10 @@ menu_input_barr.extend(trig_exec_entry)
 menu_input_barr.extend(trig_exit_entry)
 
 
-selected_opts_barr = []
+selected_opts_lst = []
 
 def exec_scrot():
-    print(selected_opts_barr)
+    print(selected_opts_lst)
 
 def first_cell(tsv_row: bytes) -> bytes:
     return tsv_row.split(b'\t')[0]
@@ -40,8 +40,10 @@ def seive_opts_barr(opts: bytes) -> bytes:
 
 menu_input_barr.extend(seive_opts_barr(list_opts_barr))
 
+# def hadle_opt_stack() -> bytes:
+
 while True:
-    prompt_string = b'scrot ' + b' '.join(s for s in selected_opts_barr)
+    prompt_string = b'scrot ' + b' '.join(s for s in selected_opts_lst)
     menu_comp_stdout = run([ *menu_exec, b'-p', prompt_string],
                          input=menu_input_barr, capture_output=True).stdout
     if menu_comp_stdout == trig_exec_entry:
@@ -52,7 +54,7 @@ while True:
     else:
         option_letter = first_cell(menu_comp_stdout)
         option = b'-' + option_letter
-        if option in selected_opts_barr:
+        if option in selected_opts_lst:
             pass
         else:
-            selected_opts_barr.append(option)
+            selected_opts_lst.append(option)
