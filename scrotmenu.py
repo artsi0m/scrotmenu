@@ -6,24 +6,24 @@ menu_exec = ['rofi', '-dmenu']  # dmenu compatible menu with prompt (-p) option
 trig_exec_entry = b'\tRun scrot\n' # String that executes scrot when selected with menu
 trig_exit_entry = b'\tQuit scrot menu\n'
 
-scrot_opts_barr = Popen(['scrot', '--list-options=tsv'],
+list_opts_barr = Popen(['scrot', '--list-options=tsv'],
                         stdout=PIPE).stdout.read()
 
 menu_input_barr = bytearray()
 menu_input_barr.extend(trig_exec_entry)
 menu_input_barr.extend(trig_exit_entry)
-menu_input_barr.extend(scrot_opts_barr)
+menu_input_barr.extend(list_opts_barr)
 
-scrot_opts = []
+selected_opts_barr = []
 
 def exec_scrot():
-    print(scrot_opts)
+    print(selected_opts_barr)
 
-def tsv_row_first_cell(tsv_row: bytes) -> str:
-    return tsv_row.split(b'\t')[0].decode()
+def tsv_row_first_cell(tsv_row: bytes) -> bytes:
+    return tsv_row.split(b'\t')[0]
 
 while True:
-    prompt_string = 'scrot ' + ' '.join(str(s) for s in scrot_opts)
+    prompt_string = 'scrot ' + ' '.join(str(s) for s in selected_opts_barr)
     menu_comp_stdout = run([ *menu_exec, b'-p', prompt_string],
                          input=menu_input_barr, capture_output=True).stdout
     if menu_comp_stdout == trig_exec_entry:
@@ -33,11 +33,11 @@ while True:
         exit()
     else:
         option_letter = tsv_row_first_cell(menu_comp_stdout)
-        option = '-' + option_letter
-        if option in scrot_opts:
+        option = b'-' + option_letter
+        if option in selected_opts_barr:
             pass
         # TODO: just cleanup such options in menu_input_barr bytearray
-        elif option == '- ': 
+        elif option == b'- ': 
             pass
         else:
-            scrot_opts.append(option)
+            selected_opts_barr.append(option)
