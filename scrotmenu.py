@@ -45,7 +45,7 @@ def handle_opt_stack_k() -> bytes:
     prompt_string = b'-k (--stack[=OPT])'
     return run([ *menu_exec, b'-p', prompt_string],
                input=menu_input_barr,
-               capture_output=True).stdout.split(b'\n')[0]
+               capture_output=True).stdout.strip(b'\n')
 
 
 while True:
