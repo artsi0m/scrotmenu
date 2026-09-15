@@ -54,8 +54,5 @@ while True:
         option = b'-' + option_letter
         if option in selected_opts_barr:
             pass
-        # TODO: just cleanup such options in menu_input_barr bytearray
-        elif option == b'- ': 
-            pass
         else:
             selected_opts_barr.append(option)
