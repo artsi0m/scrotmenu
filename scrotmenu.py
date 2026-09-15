@@ -12,15 +12,33 @@ list_opts_barr = Popen(['scrot', '--list-options=tsv'],
 menu_input_barr = bytearray()
 menu_input_barr.extend(trig_exec_entry)
 menu_input_barr.extend(trig_exit_entry)
-menu_input_barr.extend(list_opts_barr)
+
 
 selected_opts_barr = []
 
 def exec_scrot():
     print(selected_opts_barr)
 
-def tsv_row_first_cell(tsv_row: bytes) -> bytes:
+def first_cell(tsv_row: bytes) -> bytes:
     return tsv_row.split(b'\t')[0]
+
+def second_cell(tsv_row: bytes) -> bytes:
+    return tsv_row.split(b'\t')[1]
+
+def forth_cell(tsv_row: bytes) -> bytes:
+    return tsv_row.split(b'\t')[3]
+
+def seive_opts_barr(opts: bytes) -> bytes:
+    ret = bytearray()
+    for row in opts.split(b'\n'):
+        if not bytes.isalpha(first_cell(row)):
+            pass
+        else:
+            new_row = first_cell(row) + b'\t' + second_cell(row) + b'\t' + forth_cell(row) + b'\n'
+            ret.extend(new_row)
+    return ret
+
+menu_input_barr.extend(seive_opts_barr(list_opts_barr))
 
 while True:
     prompt_string = b'scrot ' + b' '.join(s for s in selected_opts_barr)
@@ -32,7 +50,7 @@ while True:
     elif menu_comp_stdout == trig_exit_entry:
         exit()
     else:
-        option_letter = tsv_row_first_cell(menu_comp_stdout)
+        option_letter = first_cell(menu_comp_stdout)
         option = b'-' + option_letter
         if option in selected_opts_barr:
             pass
