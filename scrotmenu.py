@@ -40,7 +40,13 @@ def seive_opts_barr(opts: bytes) -> bytes:
 
 menu_input_barr.extend(seive_opts_barr(list_opts_barr))
 
-# def hadle_opt_stack() -> bytes:
+def handle_opt_stack_k() -> bytes:
+    menu_input_barr = b'h\nv'
+    prompt_string = b'-k (--stack[=OPT])'
+    return run([ *menu_exec, b'-p', prompt_string],
+               input=menu_input_barr,
+               capture_output=True).stdout.split(b'\n')[0]
+
 
 while True:
     prompt_string = b'scrot ' + b' '.join(s for s in selected_opts_lst)
@@ -51,6 +57,9 @@ while True:
         break
     elif menu_comp_stdout == trig_exit_entry:
         exit()
+    elif first_cell(menu_comp_stdout) == b'k':
+        selected_opts_lst.append(b'-' + b'k')
+        selected_opts_lst.append(b' ' + handle_opt_stack_k())
     else:
         option_letter = first_cell(menu_comp_stdout)
         option = b'-' + option_letter
