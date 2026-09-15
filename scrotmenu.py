@@ -24,15 +24,15 @@ def tsv_row_first_cell(tsv_row: bytes) -> str:
 
 while True:
     prompt_string = 'scrot ' + ' '.join(str(s) for s in scrot_opts)
-    menu_comp_proc = run([ *menu_exec, '-p', prompt_string],
-                         input=menu_input_barr, capture_output=True)
-    if menu_comp_proc.stdout == trig_exec_entry:
+    menu_comp_stdout = run([ *menu_exec, b'-p', prompt_string],
+                         input=menu_input_barr, capture_output=True).stdout
+    if menu_comp_stdout == trig_exec_entry:
         exec_scrot()
         break
-    elif menu_comp_proc.stdout == trig_exit_entry:
+    elif menu_comp_stdout == trig_exit_entry:
         exit()
     else:
-        option_letter = tsv_row_first_cell(menu_comp_proc.stdout)
+        option_letter = tsv_row_first_cell(menu_comp_stdout)
         option = '-' + option_letter
         if option in scrot_opts:
             pass
