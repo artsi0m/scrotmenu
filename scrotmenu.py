@@ -59,7 +59,7 @@ while True:
         exit()
     elif first_cell(menu_comp_stdout) == b'k':
         selected_opts_lst.append(b'-' + b'k')
-        selected_opts_lst.append(b' ' + handle_opt_stack_k())
+        selected_opts_lst.append(handle_opt_stack_k())
     else:
         option_letter = first_cell(menu_comp_stdout)
         option = b'-' + option_letter
