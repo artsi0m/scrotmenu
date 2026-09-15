@@ -36,7 +36,7 @@ while True:
         option = '-' + option_letter
         if option in scrot_opts:
             pass
-        # TODO: just cleanup such options in rofi_input_barr bytearray
+        # TODO: just cleanup such options in menu_input_barr bytearray
         elif option == '- ': 
             pass
         else:
