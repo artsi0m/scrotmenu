@@ -23,7 +23,7 @@ def tsv_row_first_cell(tsv_row: bytes) -> bytes:
     return tsv_row.split(b'\t')[0]
 
 while True:
-    prompt_string = 'scrot ' + ' '.join(str(s) for s in selected_opts_barr)
+    prompt_string = b'scrot ' + b' '.join(s for s in selected_opts_barr)
     menu_comp_stdout = run([ *menu_exec, b'-p', prompt_string],
                          input=menu_input_barr, capture_output=True).stdout
     if menu_comp_stdout == trig_exec_entry:
