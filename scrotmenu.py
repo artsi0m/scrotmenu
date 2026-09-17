@@ -17,7 +17,7 @@ menu_input_barr.extend(trig_exit_entry)
 selected_opts_lst = []
 
 def exec_scrot():
-    print(selected_opts_lst)
+    print([b'scrot', *selected_opts_lst])
 
 def first_cell(tsv_row: bytes) -> bytes:
     return tsv_row.split(b'\t')[0]
@@ -47,6 +47,20 @@ def handle_opt_stack_k() -> bytes:
                input=menu_input_barr,
                capture_output=True).stdout.strip(b'\n')
 
+def handle_opt_line_l() -> bytes:
+    trig_exec_entry = b'\tSave selection style'
+    trig_exit_entry = b'\tQuit selection style submenu'
+    trig_mode_entry = b'mode'
+    trig_style_entry = b'style'
+    trig_width_entry = b'width'
+    trig_opacity_entry = b'opacity'
+    menu_input_barr = b'\n'.join(s for s in [ trig_exec_entry,
+                                              trig_exit_entry,
+                                              trig_mode_entry,
+                                              trig_style_entry,
+                                              trig_width_entry,
+                                              trig_opacity_entry ])
+    return menu_input_barr
 
 while True:
     prompt_string = b'scrot ' + b' '.join(s for s in selected_opts_lst)
