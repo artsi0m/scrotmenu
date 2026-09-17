@@ -40,12 +40,15 @@ def seive_opts_barr(opts: bytes) -> bytes:
 
 menu_input_barr.extend(seive_opts_barr(list_opts_barr))
 
-def handle_opt_stack_k() -> bytes:
+def handle_opt_stack_k(opts: list):
     menu_input_barr = b'h\nv'
     prompt_string = b'-k (--stack[=OPT])'
-    return run([ *menu_exec, b'-p', prompt_string],
+    sel = run([ *menu_exec, b'-p', prompt_string],
                input=menu_input_barr,
                capture_output=True).stdout.strip(b'\n')
+    opts.append(b'-' + b'k')
+    opts.append(sel)
+
 
 def handle_opt_line_l() -> bytes:
     trig_exec_entry = b'\tSave selection style'
@@ -72,8 +75,7 @@ while True:
     elif menu_comp_stdout == trig_exit_entry:
         exit()
     elif first_cell(menu_comp_stdout) == b'k':
-        selected_opts_lst.append(b'-' + b'k')
-        selected_opts_lst.append(handle_opt_stack_k())
+        handle_opt_stack_k(selected_opts_lst)
     else:
         option_letter = first_cell(menu_comp_stdout)
         option = b'-' + option_letter
