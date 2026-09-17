@@ -34,7 +34,7 @@ def seive_opts_barr(opts: bytes) -> bytes:
         if not bytes.isalpha(first_cell(row)):
             pass
         else:
-            new_row = first_cell(row) + b'\t' + second_cell(row) + b'\t' + forth_cell(row) + b'\n'
+            new_row = first_cell(row) + b'\t' + forth_cell(row) + b' ( --' + second_cell(row) + b')'+ b'\n'
             ret.extend(new_row)
     return ret
 
