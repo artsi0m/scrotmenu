@@ -40,6 +40,15 @@ def seive_opts_barr(opts: bytes) -> bytes:
 
 menu_input_barr.extend(seive_opts_barr(list_opts_barr))
 
+def handle_opt_no_arg(opts: list, option_letter: bytes):
+    """Handle options bcfhimopuvz"""
+    option = b'-' + option_letter
+    if option in opts:
+        return
+    else:
+        opts.append(option)
+
+
 def handle_opt_stack_k(opts: list):
     if b'-k' in opts:
         return
@@ -79,9 +88,4 @@ while True:
     elif first_cell(menu_comp_stdout) == b'k':
         handle_opt_stack_k(selected_opts_lst)
     else:
-        option_letter = first_cell(menu_comp_stdout)
-        option = b'-' + option_letter
-        if option in selected_opts_lst:
-            pass
-        else:
-            selected_opts_lst.append(option)
+        handle_opt_no_arg(selected_opts_lst, first_cell(menu_comp_stdout))
