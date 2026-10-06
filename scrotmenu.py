@@ -84,7 +84,8 @@ while True:
         exec_scrot()
         break
     elif menu_comp_stdout == trig_exit_entry:
-        exit()
+        print(selected_opts_lst)
+        break
     elif first_cell(menu_comp_stdout) == b'k':
         handle_opt_stack_k(selected_opts_lst)
     else:
