@@ -3,6 +3,10 @@
 from subprocess import run,Popen,PIPE
 
 menu_exec = ['rofi', '-dmenu']  # dmenu compatible menu with prompt (-p) option
+
+# should be set in settings with the note that ~ expansion and variables wont work
+scrot_folder = b'/home/artsi0m/Pictures/Screenshots/INBOX-scrot/%Y-%m-%d-%H%M%S.png'
+
 trig_exec_entry = b'\tRun scrot\n' # String that executes scrot when selected with menu
 trig_exit_entry = b'\tQuit scrot menu\n'
 
@@ -17,7 +21,9 @@ menu_input_barr.extend(trig_exit_entry)
 selected_opts_lst = []
 
 def exec_scrot():
-    print([b'scrot', *selected_opts_lst])
+    run([b'scrot', scrot_folder, *selected_opts_lst])
+
+
 
 def first_cell(tsv_row: bytes) -> bytes:
     return tsv_row.split(b'\t')[0]
